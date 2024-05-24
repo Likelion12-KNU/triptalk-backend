@@ -1,7 +1,7 @@
 package com.example.triptalk.entity;
 
 import com.example.triptalk.service.PostService;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;

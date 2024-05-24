@@ -1,7 +1,8 @@
 package com.example.triptalk.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name="user_info", uniqueConstraints = {
