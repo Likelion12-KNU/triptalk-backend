@@ -1,6 +1,8 @@
 package com.example.triptalk.entity;
 
 import javax.persistence.*;
+
+import com.example.triptalk.service.CommentService;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -19,7 +21,7 @@ public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    @Column(length= 300, nullable=false)
+    @Column(length= CommentService.MAX_CONTENT_LENGTH, nullable=false)
     private String content;
     @ManyToOne(fetch= FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
@@ -27,4 +29,8 @@ public class Comment extends BaseEntity {
     @ManyToOne(fetch= FetchType.LAZY)
     @OnDelete(action=OnDeleteAction.CASCADE)
     private Post post;
+
+    public void changeContent(String content){
+        this.content=content;
+    }
 }

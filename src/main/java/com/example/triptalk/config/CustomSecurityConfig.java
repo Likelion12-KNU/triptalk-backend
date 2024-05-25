@@ -74,7 +74,7 @@ public class CustomSecurityConfig {
 
 
         // LoginFilter 설정
-        LoginFilter loginFilter=new LoginFilter("/auth/login");
+        LoginFilter loginFilter=new LoginFilter("/api/auth/login");
         loginFilter.setAuthenticationManager(authManager);
 
         LoginSuccessHandler loginSuccessHandler=new LoginSuccessHandler(jwtUtil, userInfoService);

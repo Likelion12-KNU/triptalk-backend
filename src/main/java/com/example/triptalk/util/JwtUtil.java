@@ -4,7 +4,6 @@ import com.example.triptalk.exception.TokenException;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +14,6 @@ import java.util.Date;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.io.Decoders;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 
 
 @Component

@@ -2,9 +2,15 @@ package com.example.triptalk.service;
 
 import com.example.triptalk.dto.PostInputDto;
 import com.example.triptalk.dto.PostOutputDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
+@Transactional
+@RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
 
