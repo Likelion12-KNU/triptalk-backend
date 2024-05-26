@@ -2,6 +2,7 @@ package com.example.triptalk.service;
 
 import com.example.triptalk.dto.CommentInputDto;
 import com.example.triptalk.dto.CommentOutputDto;
+import com.example.triptalk.exception.TokenException;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface CommentService {
     // 댓글 삭제
     void remove(Long commentId);
 
-    boolean isAuthor(Long commentId, String userId);
+    boolean isAuthor(Long commentId, Object principal) throws TokenException;
 }

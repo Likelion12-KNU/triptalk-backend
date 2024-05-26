@@ -17,10 +17,10 @@ public class CommentServiceTests {
 
     @Test
     public void testRegister(){
-        Long postId=1L;
-        String userId="";
+        Long postId=2L;
+        String userId="Ho7tiwRzhwbvacEz";
         CommentInputDto commentInputDto= CommentInputDto.builder()
-                .content("서비스 등록 테스트")
+                .content("댓글 등록 테스트 2")
                 .build();
         CommentOutputDto result=commentService.register(postId, commentInputDto, userId);
         log.info(result);
@@ -28,7 +28,7 @@ public class CommentServiceTests {
 
     @Test
     public void testReadAll(){
-        Long postId=1L;
+        Long postId=2L;
         List<CommentOutputDto> result=commentService.readAllByPost(postId);
         result.forEach(commentOutputDto -> log.info(commentOutputDto));
     }
@@ -37,7 +37,7 @@ public class CommentServiceTests {
     public void testModify(){
         Long commentId=1L;
         CommentInputDto commentInputDto= CommentInputDto.builder()
-                .content("서비스 수정 테스트")
+                .content("댓글 수정 테스트")
                 .build();
         CommentOutputDto result=commentService.modify(commentId, commentInputDto);
         log.info(result);

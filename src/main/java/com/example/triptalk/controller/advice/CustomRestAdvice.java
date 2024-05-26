@@ -2,6 +2,7 @@ package com.example.triptalk.controller.advice;
 
 import com.example.triptalk.exception.ErrorResponse;
 import com.example.triptalk.exception.InputValueException;
+import com.example.triptalk.exception.TokenException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -86,6 +87,18 @@ public class CustomRestAdvice {
      */
     @ExceptionHandler(InputValueException.class)
     public ResponseEntity<Map<String, Object>> handleInputValueException(InputValueException e){
+        ErrorResponse errorResponse=new ErrorResponse();
+        errorResponse.putItem("message", e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(errorResponse.getResponse());
+    }
+
+    /**
+     * 토큰 관련 예외 처리
+     * @param e TokenException
+     * @return ResponseEntity
+     */
+    @ExceptionHandler(TokenException.class)
+    public ResponseEntity<Map<String, Object>> handleInputValueException(TokenException e){
         ErrorResponse errorResponse=new ErrorResponse();
         errorResponse.putItem("message", e.getMessage());
         return ResponseEntity.status(e.getStatus()).body(errorResponse.getResponse());

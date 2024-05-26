@@ -47,7 +47,7 @@ public class CommentController {
     }
 
     @ApiOperation("특정 댓글 수정")
-    @PreAuthorize("@commentServiceImpl.isAuthor(#commentId, principal.getId())")
+    @PreAuthorize("@commentServiceImpl.isAuthor(#commentId, principal)")
     @PutMapping(value="/{commentId}", consumes=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommentOutputDto> update(@PathVariable Long postId, @PathVariable Long commentId, @Valid @RequestBody CommentInputDto commentInputDto){
         CommentOutputDto commentOutputDto=commentService.modify(commentId, commentInputDto);
@@ -55,7 +55,7 @@ public class CommentController {
     }
 
     @ApiOperation("특정 댓글 삭제")
-    @PreAuthorize("@commentServiceImpl.isAuthor(#commentId, principal.getId())")
+    @PreAuthorize("@commentServiceImpl.isAuthor(#commentId, principal)")
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> delete(@PathVariable Long commentId){
         commentService.remove(commentId);

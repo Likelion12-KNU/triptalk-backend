@@ -23,4 +23,11 @@ public class Post extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
     private UserInfo author;
+
+    public void changeTitle(String title){
+        this.title=title;
+    }
+    public void changeContent(String content){
+        this.content=content;
+    }
 }

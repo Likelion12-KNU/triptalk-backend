@@ -6,9 +6,11 @@ import com.example.triptalk.dto.PostOutputDto;
 import com.example.triptalk.entity.Comment;
 import com.example.triptalk.entity.Post;
 import com.example.triptalk.entity.UserInfo;
+import com.example.triptalk.exception.TokenException;
 import com.example.triptalk.repository.CommentRepository;
 import com.example.triptalk.repository.PostRepository;
 import com.example.triptalk.repository.UserInfoRepository;
+import com.example.triptalk.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -63,7 +65,11 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentOutputDto> readAllByPost(Long postId){
         List<Comment> comments=commentRepository.findAllByPostId(postId);
         List<CommentOutputDto> commentOutputDtos= comments.stream()
-                .map(comment->modelMapper.map(comment, CommentOutputDto.class))
+                .map(comment->{
+                    CommentOutputDto commentOutputDto=modelMapper.map(comment, CommentOutputDto.class);
+                    commentOutputDto.setNickname(comment.getAuthor().getNickname());
+                    return commentOutputDto;
+                })
                 .collect(Collectors.toList());
         return commentOutputDtos;
     }
@@ -104,7 +110,14 @@ public class CommentServiceImpl implements CommentService {
      * @return 사용자가 댓글의 작성자가 맞는지 여부
      */
     @Override
-    public boolean isAuthor(Long commentId, String userId){
+    public boolean isAuthor(Long commentId, Object principal) throws TokenException {
+        String userId = null;
+        if (principal instanceof UserDetailsImpl) {
+            userId = ((UserDetailsImpl) principal).getId();
+        }
+        if(userId==null){
+            throw new TokenException(TokenException.TOKEN_ERROR.UNACCEPT);
+        }
         Comment comment=commentRepository.findById(commentId).orElseThrow();
         return comment.getAuthor().getId().equals(userId);
     }

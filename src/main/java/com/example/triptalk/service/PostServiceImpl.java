@@ -2,10 +2,13 @@ package com.example.triptalk.service;
 
 import com.example.triptalk.dto.PostInputDto;
 import com.example.triptalk.dto.PostOutputDto;
+import com.example.triptalk.entity.Comment;
 import com.example.triptalk.entity.Post;
 import com.example.triptalk.entity.UserInfo;
+import com.example.triptalk.exception.TokenException;
 import com.example.triptalk.repository.PostRepository;
 import com.example.triptalk.repository.UserInfoRepository;
+import com.example.triptalk.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -33,7 +36,7 @@ public class PostServiceImpl implements PostService {
 
         Post post = Post.builder()
                 .title(postInputDto.getTitle())
-                .content(postInputDto.getNickname())
+                .content(postInputDto.getContent())
                 .author(userInfo)
                 .build();
 
@@ -54,9 +57,7 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public PostOutputDto read(Long id){
-
         Post post = postRepository.findById(id).orElseThrow();
-
         return PostOutputDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -92,8 +93,7 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public void remove(Long id){
-        Post post = postRepository.findById(id).orElseThrow();
-        postRepository.delete(post);
+        postRepository.deleteById(id);
     }
 
     /**
@@ -107,5 +107,24 @@ public class PostServiceImpl implements PostService {
                 .map(post -> modelMapper.map(post, PostOutputDto.class))
                 .collect(Collectors.toList());
         return postOutputDtos;
+    }
+
+    /**
+     * 사용자가 게시글의 작성자가 맞는지 검사
+     * @param postId 게시글 ID
+     * @param principal 인증 정보
+     * @return 사용자가 게시글의 작성자가 맞는지 여부
+     */
+    @Override
+    public boolean isAuthor(Long postId, Object principal) throws TokenException{
+        String userId = null;
+        if (principal instanceof UserDetailsImpl) {
+            userId = ((UserDetailsImpl) principal).getId();
+        }
+        if(userId==null){
+            throw new TokenException(TokenException.TOKEN_ERROR.UNACCEPT);
+        }
+        Post post=postRepository.findById(postId).orElseThrow();
+        return post.getAuthor().getId().equals(userId);
     }
 }
