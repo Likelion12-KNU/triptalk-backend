@@ -1,5 +1,6 @@
 package com.example.triptalk.service;
 
+import com.example.triptalk.dto.PageRequestDto;
 import com.example.triptalk.dto.PostInputDto;
 import com.example.triptalk.dto.PostOutputDto;
 
@@ -18,8 +19,8 @@ public interface PostService {
     // 게시글 삭제
     void remove(Long id);
 
-    // 모든 게시글 조회 (추후 페이징으로 변경)
-    List<PostOutputDto> readAll();
+    // 페이징
+    List<PostOutputDto> getPages(PageRequestDto pageRequestDto);
 
     // 사용자가 게시글의 작성자가 맞는지 검사
     boolean isAuthor(Long postId, Object principal);

@@ -1,5 +1,6 @@
 package com.example.triptalk.controller;
 
+import com.example.triptalk.dto.PageRequestDto;
 import com.example.triptalk.dto.PostInputDto;
 import com.example.triptalk.dto.PostOutputDto;
 import com.example.triptalk.exception.TokenException;
@@ -37,12 +38,21 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
 
-    @ApiOperation("모든 게시글 조회")
+    @ApiOperation("페이징된 게시글 조회")
     @GetMapping("")
-    public ResponseEntity<List<PostOutputDto>> getAllPosts() {
-        List<PostOutputDto> getAllPosts = postService.readAll();
-        return ResponseEntity.status(HttpStatus.OK).body(getAllPosts);
+    public ResponseEntity<List<PostOutputDto>> getPages(
+            @RequestParam(defaultValue = "0") int num,
+            @RequestParam(defaultValue = "10") int size) {
+
+        PageRequestDto pageRequestDto = PageRequestDto.builder()
+                .num(num)
+                .size(size)
+                .build();
+
+        List<PostOutputDto> pageResponseDto = postService.getPages(pageRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(pageResponseDto);
     }
+
 
     @ApiOperation("특정 게시글 조회")
     @GetMapping("/{postId}")

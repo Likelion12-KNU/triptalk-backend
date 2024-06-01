@@ -1,8 +1,8 @@
 package com.example.triptalk.service;
 
+import com.example.triptalk.dto.PageRequestDto;
 import com.example.triptalk.dto.PostInputDto;
 import com.example.triptalk.dto.PostOutputDto;
-import com.example.triptalk.entity.Comment;
 import com.example.triptalk.entity.Post;
 import com.example.triptalk.entity.UserInfo;
 import com.example.triptalk.exception.TokenException;
@@ -11,6 +11,8 @@ import com.example.triptalk.repository.UserInfoRepository;
 import com.example.triptalk.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,15 +99,19 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * 모든 게시글 조회 (추후 페이징으로 변경)
-     * @return List<PostOutputDto> 모든 게시글
+     * 페이징된 게시글 조회
+     *
+     * @param pageRequestDto 페이지 요청 DTO
+     * @return 페이징된 게시글 목록을 담은 PageResponseDto 객체
      */
-    @Override
-    public List<PostOutputDto> readAll(){
-        List<Post> posts = postRepository.findAll();
-        List<PostOutputDto> postOutputDtos = posts.stream()
+    public List<PostOutputDto> getPages(PageRequestDto pageRequestDto) {
+        PageRequest pageable = PageRequest.of(pageRequestDto.getNum(), pageRequestDto.getSize());
+        Page<Post> postsPage = postRepository.findAll(pageable);
+
+        List<PostOutputDto> postOutputDtos = postsPage.stream()
                 .map(post -> modelMapper.map(post, PostOutputDto.class))
                 .collect(Collectors.toList());
+
         return postOutputDtos;
     }
 
