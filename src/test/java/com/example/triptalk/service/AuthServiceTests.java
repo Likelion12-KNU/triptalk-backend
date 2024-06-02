@@ -19,12 +19,14 @@ public class AuthServiceTests {
     public void testRegisterUser(){
         try{
             SignupRequestDto signUpRequestDTO= SignupRequestDto.builder()
-                    .username("testuser2")
-                    .password("testpassword2")
+                    .username("testuser1")
+                    .password("testpassword1")
                     .nickname("밤샘코딩")
                     .build();
             UserInfoDto result=authService.registerUser(signUpRequestDTO);
             log.info(result);
-        }catch(Exception e){}
+        }catch(Exception e){
+            log.info(e.getMessage());
+        }
     }
 }

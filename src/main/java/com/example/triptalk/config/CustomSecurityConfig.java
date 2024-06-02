@@ -51,9 +51,10 @@ public class CustomSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         // 접근 허용할 도메인, 메서드, 헤더 설정
         CorsConfiguration configuration=new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST","PUT","DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization","Cache-Control","Content-Type"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://14.54.95.140:5173"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("*")); // 모든 헤더 허용
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
         configuration.setAllowCredentials(true);
 
         // 모든 경로에 대해서 API 호출 허용
